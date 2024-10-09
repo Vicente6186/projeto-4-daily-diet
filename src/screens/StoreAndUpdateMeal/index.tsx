@@ -16,13 +16,13 @@ type RouteParams = {
 
 export default function StoreAndUpdateMeal() {
     const navigation = useNavigation();
-    const { variant, meal } = useRoute().params as RouteParams;    
+    const { variant, meal = { id: '', name: '', description: '', date: null, isDiet: null } } = useRoute().params as RouteParams;
 
     const id = meal.id;
-    const [name, setName] = useState(meal.name || '');
-    const [description, setDescription] = useState(meal.description || '');
-    const [date, setDate] = useState(meal.date.toLocaleDateString('pt-BR') || '');
-    const [hour, setHour] = useState(meal.date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) || '');
+    const [name, setName] = useState(meal.name);
+    const [description, setDescription] = useState(meal.description);
+    const [date, setDate] = useState(meal.date ? meal.date.toLocaleDateString('pt-BR') : '');
+    const [hour, setHour] = useState(meal.date ? meal.date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '');
     const [isDiet, setIsDiet] = useState<boolean | null>(meal.isDiet);
 
 

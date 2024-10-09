@@ -18,8 +18,12 @@ export default function Home() {
     const navigation = useNavigation();
     const [variant, setVariant] = useState<VariantType>('SUCCESS');
     const [mealsGroupedByDate, setMealsGroupedByDate] = useState<MealGroupType>({});
+    const [percentage, setPercentage] = useState(0);
     function indexMeals() {
         Meal.index().then((meals) => {
+            const percentage = Number((meals.filter(meal => meal.isDiet).length / meals.length * 100).toFixed(0))
+            setPercentage(percentage)
+            setVariant(percentage > 50 ? 'SUCCESS' : 'DANGER')
             const mealsGroupedByDate = meals.reduce<MealGroupType>((prev, meal) => {
                 const key = meal.date.toLocaleDateString('pt-BR')
                 prev[key] = prev[key] || [];
@@ -45,7 +49,7 @@ export default function Home() {
             </Header>
 
             <ReviewContainer variant={variant}>
-                <TitleLg>100%</TitleLg>
+                <TitleLg>{percentage}%</TitleLg>
                 <BodySm>das refeições dentro da dieta</BodySm>
                 <ReviewArrow name="arrow-up-right" onPress={() => navigation.navigate('Overview')} variant={variant} />
             </ReviewContainer>
